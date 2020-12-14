@@ -1,5 +1,5 @@
 <template>
-    <div class="app-main-layout">
+  <div class="app-main-layout">
     <nav class="navbar orange lighten-1">
       <div class="nav-wrapper">
         <div class="navbar-left">
@@ -67,5 +67,11 @@
         <i class="large material-icons">add</i>
       </a>
     </div>
-</div>
+  </div>
 </template>
+
+<script>
+export default {
+  name: 'Mainlayout'
+}
+</script>
