@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    <component :is="layout">
-    </component>
+    <component :is="layout" />
   </div>
 </template>
 
 <script>
 import EmptyLayout from '@/layouts/EmptyLayout'
 import MainLayout from '@/layouts/MainLayout'
+
 export default {
   components: {
     EmptyLayout,
