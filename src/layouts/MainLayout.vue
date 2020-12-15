@@ -1,18 +1,18 @@
 <template>
   <div class="app-main-layout">
-  <Navbar @clickNav="isOpen = !isOpen" />
-  <Sidebar :isOpen="isOpen" />
-    <div class="app-main-layout">
-      <main class="app-content" :class="{full: !isOpen}">
+    <Navbar @clickNav="isOpen = !isOpen" />
+    <Sidebar :isOpen="isOpen" />
+      <div class="app-main-layout">
+        <main class="app-content" :class="{full: !isOpen}">
         <div class="app-page">
-          <router-view></router-view>
+          <router-view />
         </div>
       </main>
 
       <div class="fixed-action-btn">
-        <a class="btn-floating btn-large blue" href="#">
+        <router-link class="btn-floating btn-large red" to="/record">
           <i class="large material-icons">add</i>
-        </a>
+        </router-link>
       </div>
     </div>
   </div>

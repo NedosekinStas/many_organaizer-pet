@@ -3,43 +3,71 @@
     <div class="nav-wrapper">
     <div class="navbar-left">
         <a href="#" @click.prevent="$emit('clickNav')">
-        <i class="material-icons black-text">dehaze</i>
+        <i class="material-icons white-text">dehaze</i>
         </a>
-        <span class="black-text">12.12.12</span>
+        <span class="white-text">{{ date | date('datetime') }}</span>
     </div>
 
     <ul class="right hide-on-small-and-down">
-        <li>
+      <li>
         <a
-            class="dropdown-trigger black-text"
-            href="#"
-            data-target="dropdown"
+          class="dropdown-trigger white-text"
+          href="#"
+          data-target="dropdown"
+          ref="dropdown"
         >
             USER NAME
             <i class="material-icons right">arrow_drop_down</i>
         </a>
 
         <ul id='dropdown' class='dropdown-content'>
-            <li>
-            <a href="#" class="black-text">
-                <i class="material-icons">account_circle</i>Профиль
-            </a>
-            </li>
-            <li class="divider" tabindex="-1"></li>
-            <li>
-            <a href="#" class="black-text">
+          <li>
+            <router-link to="/profile" class="black-text">
+              <i class="material-icons">account_circle</i>Профиль
+            </router-link>
+          </li>
+          <li class="divider" tabindex="-1"></li>
+          <li>
+            <a href="#" class="black-text" @click.prevent="logout">
                 <i class="material-icons">assignment_return</i>Выйти
             </a>
-            </li>
+          </li>
         </ul>
-        </li>
+      </li>
     </ul>
     </div>
   </nav>
 </template>
 
 <script>
+import M from 'materialize-css'
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  data: () => ({
+    date: new Date(),
+    interval: null,
+    dropdown: null
+  }),
+  methods: {
+    logout () {
+      console.log('Logout')
+      this.$router.push('/login?message=logout')
+    }
+  },
+  mounted () {
+    this.interval = setInterval(() => {
+      this.date = new Date()
+    }, 1000)
+    this.dropdown = M.Dropdown.init(this.$refs.dropdown, {
+      constrainWidth: true
+    })
+  },
+  // Очищаем параметры у шаблона при удалении
+  beforeDestroy () {
+    clearInterval(this.interval)
+    if (this.dropdown && this.dropdown.destroy) {
+      this.dropdown.destroy()
+    }
+  }
 }
 </script>

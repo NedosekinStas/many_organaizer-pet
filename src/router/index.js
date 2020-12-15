@@ -5,12 +5,6 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    meta: { layout: 'main' },
-    component: () => import('../views/Home.vue')
-  },
-  {
     path: '/login',
     name: 'Login',
     meta: { layout: 'empty' },
@@ -21,6 +15,12 @@ const routes = [
     name: 'Register',
     meta: { layout: 'empty' },
     component: () => import('../views/Register.vue')
+  },
+  {
+    path: '/',
+    name: 'Home',
+    meta: { layout: 'main' },
+    component: () => import('../views/Home.vue')
   },
   {
     path: '/categories',
