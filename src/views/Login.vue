@@ -1,7 +1,6 @@
 <template>
   <form class="card auth-card" @submit.prevent="onSubmit">
     <div class="card-content">
-    <span class="card-title">Домашняя бухгалтерия</span>
       <div class="input-field">
         <input
           id="email"
@@ -69,10 +68,12 @@ import { email, required, minLength } from 'vuelidate/lib/validators'
 
 export default {
   name: 'Login',
-  data: () => ({
-    email: '',
-    password: ''
-  }),
+  data () {
+    return {
+      email: '',
+      password: ''
+    }
+  },
   validations: {
     email: {
       email,
