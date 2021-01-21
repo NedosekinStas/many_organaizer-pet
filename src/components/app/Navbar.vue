@@ -43,14 +43,16 @@
 import M from 'materialize-css'
 export default {
   name: 'Navbar',
-  data: () => ({
-    date: new Date(),
-    interval: null,
-    dropdown: null
-  }),
+  data () {
+    return {
+      date: new Date(),
+      interval: null,
+      dropdown: null
+    }
+  },
   methods: {
-    logout () {
-      console.log('Logout')
+    async logout () {
+      await this.$store.dispatch('logout')
       this.$router.push('/login?message=logout')
     }
   },
