@@ -19,6 +19,7 @@ Vue.filter('date', dateFilter)
 firebase.initializeApp({
   apiKey: 'AIzaSyBdkxwgt8TlKIZ7TQu6BmIFIwRZoaebpro',
   authDomain: 'many-organaizer.firebaseapp.com',
+  databaseURL: 'https://many-organaizer-default-rtdb.europe-west1.firebasedatabase.app',
   projectId: 'many-organaizer',
   storageBucket: 'many-organaizer.appspot.com',
   messagingSenderId: '639554075802',
