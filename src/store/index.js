@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './auth'
 import info from './info'
+import category from './category'
 
 Vue.use(Vuex)
 
@@ -9,6 +10,7 @@ export default new Vuex.Store({
   state: {
     error: null
   },
+  // setError будет активен когда в экшене произойдет ошибка, для того что бы компонент и его логика не выполнялась
   mutations: {
     setError (state, error) {
       state.error = error
@@ -29,6 +31,7 @@ export default new Vuex.Store({
   },
   modules: {
     auth,
-    info
+    info,
+    category
   }
 })
