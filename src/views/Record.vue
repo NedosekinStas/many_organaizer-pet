@@ -4,11 +4,19 @@
       <h3>Новая запись</h3>
     </div>
 
-    <form class="form">
+    <Loader v-if="loading" />
+
+    <p v-else-if="!categories.length">Категорий пока нет. <router-link to="/categories"></router-link></p>
+
+    <form class="form" v-else @submit.prevent="onSubmit">
       <div class="input-field" >
-        <select>
+        <select ref="select" v-model="category">
           <option
-          >name cat</option>
+            v-for="index in categories"
+            :key="index.id"
+            :value="index.id"
+          > {{ index.title }}
+          </option>
         </select>
         <label>Выберите категорию</label>
       </div>
@@ -20,6 +28,7 @@
               name="type"
               type="radio"
               value="income"
+              v-model="type"
           />
           <span>Доход</span>
         </label>
@@ -32,6 +41,7 @@
               name="type"
               type="radio"
               value="outcome"
+              v-model="type"
           />
           <span>Расход</span>
         </label>
@@ -41,19 +51,32 @@
         <input
             id="amount"
             type="number"
+            v-model.number="amount"
+            :class="{invalid: $v.amount.$dirty && !$v.amount.minValue}"
         >
         <label for="amount">Сумма</label>
-        <span class="helper-text invalid">amount пароль</span>
+        <span
+          class="helper-text invalid"
+          v-if="$v.amount.$dirty && !$v.amount.minValue"
+          >
+          Минимальное значение {{ $v.amount.$params.minValue.min }}
+        </span>
       </div>
 
       <div class="input-field">
         <input
             id="description"
             type="text"
+            v-model="description"
+            :class="{invalid: $v.description.$dirty && !$v.description.required}"
         >
         <label for="description">Описание</label>
         <span
-              class="helper-text invalid">description пароль</span>
+          class="helper-text invalid"
+          v-if="$v.description.$dirty && !$v.description.minValue"
+          >
+          Введите описание {{ $v.description.$params.minValue.min }}
+        </span>
       </div>
 
       <button class="btn waves-effect waves-light" type="submit">
@@ -65,7 +88,94 @@
 </template>
 
 <script>
+import Loader from '../components/app/Loader.vue'
+import { required, minValue } from 'vuelidate/lib/validators'
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'Record'
+  components: { Loader },
+  name: 'Record',
+  data () {
+    return {
+      loading: true,
+      categories: [],
+      select: null,
+      category: null,
+      type: 'outcome',
+      amount: 100,
+      description: ''
+    }
+  },
+  validations: {
+    amount: {
+      minValue: minValue(100)
+    },
+    description: {
+      minValue: required
+    }
+  },
+  async mounted () {
+    this.categories = await this.$store.dispatch('fetchCategories')
+    this.loading = false
+
+    if (this.categories.length) {
+      this.category = this.categories[0].id
+    }
+
+    /*eslint-disable*/
+    this.$nextTick(() => {
+      this.select = M.FormSelect.init(this.$refs.select)
+      M.updateTextFields()
+    });
+  },
+  computed: {
+    ...mapGetters(['info']),
+    canCreateRecord () {
+      if (this.type === 'incomee') {
+        return true
+      }
+
+      return this.info.bill >= this.amount
+    }
+  },
+  methods: {
+    async onSubmit () {
+      if (this.$v.$invalid) {
+        this.$v.$touch()
+        return
+      }
+
+      if (this.canCreateRecord) {
+        try {
+          await this.$store.dispatch('createRecord', {
+          categoryId: this.category,
+          amount: this.amount,
+          description: this.description,
+          type: this.type,
+          date: new Date().toJSON()
+        })
+        // Обновляем состояние счета после добавления записи
+        const bill = this.type === 'income'
+          ? this.info.bill + this.amount
+          : this.info.bill - this.amount
+
+        // Обновляем его в БД
+        await this.$store.dispatch('updateInfo', { bill })
+        this.$message('Запись создана')
+        this.$v.$reset()
+        this.amount = 100
+        this.description = ''
+        } catch (e) {}
+      } else {
+        this.$message(`Недостаточно средст на счете (${this.amount - this.info.bill})`)
+      }
+    }
+  },
+  // Просто для того что бы не было утечек памяти, грубо говоря очищаем висяк
+  destroyed () {
+    if (this.select && this.select.destroy) {
+      this.select.destroy()
+    }
+  }
 }
 </script>
