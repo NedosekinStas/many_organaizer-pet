@@ -24,6 +24,7 @@
 <script>
 import Navbar from '@/components/app/Navbar'
 import Sidebar from '@/components/app/Sidebar'
+import messages from '@/common/messages'
 
 export default {
   name: 'Mainlayout',
@@ -44,6 +45,18 @@ export default {
     }
     // Если есть данные то сделаем false и не будет асинхронной операции
     this.loading = false
+  },
+  computed: {
+    error () {
+      // Если что то будет менять в геттерах тогда будет обновляться данное свойство
+      return this.$store.getters.error
+    }
+  },
+  watch: {
+    error (fbError) {
+      console.log(fbError)
+      this.$error(messages[fbError.code] || 'Что-то пошло не так')
+    }
   }
 }
 </script>
