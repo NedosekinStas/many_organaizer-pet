@@ -4,19 +4,19 @@
       <h3>Планирование</h3>
       <h4>{{ info.bill | currency('RUB') }}</h4>
     </div>
-    <Loader v-if="true" />
+    <Loader v-if="loading" />
     <p v-else-if="!categories.length">Категорий пока нет. <router-link to="/categories"></router-link></p>
     <section f-else>
       <div v-for="category of categories" :key="category.id">
         <p>
           <strong>{{ category.title }}:</strong>
-          {{ category.spend }} из {{ category.limit }}
+          {{ category.spend | currency}} из {{ category.limit | currency }}
         </p>
-        <div class="progress" >
+        <div class="progress" v-tooltip="category.tooltip">
           <div
             class="determinate"
             :class="[category.progressColor]"
-            style="{ width: category.processPercent }"
+            :style="{ width: category.progressPercent + '%' }"
           ></div>
         </div>
       </div>
@@ -26,6 +26,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import currencyFilter from '@/filters/currency.filter'
 
 export default {
   name: 'Planin',
@@ -51,7 +52,7 @@ export default {
         return total += +record.amount
       }, 0)
 
-      const percent = 100 * spend / category.limit
+      const percent = 100 * spend / key.limit
       const progressPercent = percent > 100 ? 100 : percent
       const progressColor = percent < 60
         ? 'green'
@@ -59,11 +60,15 @@ export default {
           ? 'yellow'
           : 'red'
 
+      const tooltipValue = key.limit - spend
+      const tooltip = `${ tooltipValue < 0 ? 'Превышение на' : 'Осталось' } ${currencyFilter(Math.abs(tooltipValue))}`
+
       return {
         ...key,
         progressPercent,
         progressColor,
-        spend
+        spend,
+        tooltip
       }
     })
 
