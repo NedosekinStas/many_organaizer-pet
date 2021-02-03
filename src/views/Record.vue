@@ -24,11 +24,11 @@
       <p>
         <label>
           <input
-              class="with-gap"
-              name="type"
-              type="radio"
-              value="income"
-              v-model="type"
+            class="with-gap"
+            name="type"
+            type="radio"
+            value="income"
+            v-model="type"
           />
           <span>Доход</span>
         </label>
@@ -37,11 +37,11 @@
       <p>
         <label>
           <input
-              class="with-gap"
-              name="type"
-              type="radio"
-              value="outcome"
-              v-model="type"
+            class="with-gap"
+            name="type"
+            type="radio"
+            value="outcome"
+            v-model="type"
           />
           <span>Расход</span>
         </label>
