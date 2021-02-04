@@ -21,8 +21,8 @@
         <td>
           <span
             :class="[record.typeClass]"
-            class="white-text badge red"
-          >Расход</span>
+            class="white-text badge"
+          >{{ record.typeText }}</span>
         </td>
         <td>
           <button
