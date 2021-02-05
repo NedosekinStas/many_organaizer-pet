@@ -7,5 +7,11 @@
   "Menu_History": "История",
   "Menu_Planing": "Планирование",
   "Menu_Record": "Запись",
-  "Menu_Cetegory": "Категория"
+  "Menu_Cetegory": "Категория",
+  "HomeTitle": "Счет",
+  "HomeBillTitle": "Счет в валюте",
+  "HomeCourseTitla": "Курс валют",
+  "Currency": "Валюта",
+  "Course": "Курс",
+  "Date": "Дата"
 }
