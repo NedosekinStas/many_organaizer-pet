@@ -8,23 +8,24 @@
       tag="li"
       active-class="active"
     >
-      <a href="#" class="waves-effect waves-red pointer">{{ link.title }}</a>
+      <a href="#" class="waves-effect waves-red pointer">{{ link.title | localize }}</a>
     </router-link>
   </ul>
 </template>
 
 <script>
+
 export default {
   name: 'Sidebar',
   props: ['isOpen'],
   data () {
     return {
       links: [
-        { title: 'Счет', url: '/', exact: true },
-        { title: 'История', url: '/history' },
-        { title: 'Планирование', url: '/planing' },
-        { title: 'Новая запись', url: '/record' },
-        { title: 'Категории', url: '/categories' }
+        { title: 'Menu_Bill', url: '/', exact: true },
+        { title: 'Menu_History', url: '/history' },
+        { title: 'Menu_Planing', url: '/planing' },
+        { title: 'Menu_Record', url: '/record' },
+        { title: 'Menu_Cetegory', url: '/categories' }
       ]
     }
   }
