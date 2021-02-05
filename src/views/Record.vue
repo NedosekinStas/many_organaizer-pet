@@ -54,7 +54,7 @@
             v-model.number="amount"
             :class="{invalid: $v.amount.$dirty && !$v.amount.minValue}"
         >
-        <label for="amount">Сумма</label>
+        <label for="amount" :class="{ active: amount.length }">Сумма</label>
         <span
           class="helper-text invalid"
           v-if="$v.amount.$dirty && !$v.amount.minValue"
@@ -117,7 +117,6 @@ export default {
   async mounted () {
     this.categories = await this.$store.dispatch('fetchCategories')
     this.loading = false
-
     if (this.categories.length) {
       this.category = this.categories[0].id
     }
@@ -148,23 +147,23 @@ export default {
       if (this.canCreateRecord) {
         try {
           await this.$store.dispatch('createRecord', {
-          categoryId: this.category,
-          amount: this.amount,
-          description: this.description,
-          type: this.type,
-          date: new Date().toJSON()
-        })
-        // Обновляем состояние счета после добавления записи
-        const bill = this.type === 'income'
-          ? this.info.bill + this.amount
-          : this.info.bill - this.amount
+            categoryId: this.category,
+            amount: this.amount,
+            description: this.description,
+            type: this.type,
+            date: new Date().toJSON()
+          })
+          // Обновляем состояние счета после добавления записи
+          const bill = this.type === 'income'
+            ? this.info.bill + this.amount
+            : this.info.bill - this.amount
 
-        // Обновляем его в БД
-        await this.$store.dispatch('updateInfo', { bill })
-        this.$message('Запись создана')
-        this.$v.$reset()
-        this.amount = 100
-        this.description = ''
+          // Обновляем его в БД
+          await this.$store.dispatch('updateInfo', { bill })
+          this.$message('Запись создана')
+          this.$v.$reset()
+          this.amount = 100
+          this.description = ''
         } catch (e) {}
       } else {
         this.$message(`Недостаточно средст на счете (${this.amount - this.info.bill})`)
