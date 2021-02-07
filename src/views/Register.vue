@@ -14,13 +14,13 @@
           class="helper-text invalid"
           v-if="($v.email.$dirty && !$v.email.required)"
           >
-            Поле Email не должно быть пустым
+            {{ 'NotBeEmpty' | localize }}
         </small>
         <small
           class="helper-text invalid"
           v-else-if="($v.email.$dirty && !$v.email.email)"
           >
-            Введите корректный Email
+            {{ 'EnterValidEmail' | localize }}
         </small>
       </div>
       <div class="input-field">
@@ -31,18 +31,18 @@
           v-model.trim="$v.password.$model"
           :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}"
         >
-        <label for="password">Пароль</label>
+        <label for="password">{{ 'Password' | localize }}</label>
         <small
           class="helper-text invalid"
           v-if="($v.password.$dirty && !$v.password.required)"
         >
-          Введите пароль
+          {{ 'EnterPassword' | localize }}
         </small>
         <small
           class="helper-text invalid"
           v-else-if="($v.password.$dirty && !$v.password.minLength)"
         >
-          Пароль должен состоять более из {{$v.password.$params.minLength.min}} символов {{ password.length }}
+          {{ 'PasswordMustBe' | localize }} {{$v.password.$params.minLength.min}} {{ 'CharactersNowHe' | localize }} {{ password.length }}
         </small>
       </div>
       <div class="input-field">
@@ -51,19 +51,19 @@
           type="text"
           v-model.trim="$v.name.$model"
         >
-        <label for="name">Имя</label>
+        <label for="name">{{ 'Name' | localize }}</label>
         <small
           class="helper-text invalid"
           v-if="$v.name.$dirty && !$v.name.required"
           :class="{invalid: $v.name.$dirty && !$v.name.required}"
         >
-          Введите имя
+          {{ 'EnterName' }}
         </small>
       </div>
       <p>
         <label>
           <input type="checkbox" v-model="$v.agree.$model"/>
-            <span>С правилами согласен</span>
+            <span>{{ 'AgreeRules' | localize }}</span>
         </label>
       </p>
     </div>
@@ -78,8 +78,8 @@
         </button>
       </div>
       <p class="center">
-        Уже есть аккаунт?
-        <router-link to="/login">Войти!</router-link>
+      {{ 'AlreadyAccount' | localize }}
+      <router-link to="/login">{{ 'SignIn' | localize }}</router-link>
       </p>
     </div>
   </form>
@@ -89,6 +89,11 @@
 import { email, required, minLength } from 'vuelidate/lib/validators'
 
 export default {
+  metaInfo () {
+    return {
+      title: this.$title('RegistrationTitle')
+    }
+  },
   name: 'Register',
   data () {
     return {

@@ -40,7 +40,7 @@ export default {
   },
   // Ждем инфу (Если есть то диспачим в компонент)
   async mounted () {
-    if (!Object.keys(this.$store.getters.info).length) {
+    if (!this.$store.getters.info.bill || !this.$store.getters.info.name) {
       await this.$store.dispatch('fetchInfo')
     }
     // Если есть данные то сделаем false и не будет асинхронной операции

@@ -27,6 +27,11 @@ import HomeBill from '@/components/HomeBill'
 import HomeCurrency from '@/components/HomeCurrency'
 
 export default {
+  metaInfo () {
+    return {
+      title: this.$title('HomeTitle')
+    }
+  },
   name: 'Home',
   data () {
     return {

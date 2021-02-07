@@ -10,7 +10,7 @@ export default {
     },
     // Для того что бы фронт не кешировал что либо в state когда делается logout, что бы разные пользователим не пересекались
     clearInfo (state) {
-      state.info = {}
+      state.info = { locale: state.info.locale }
     }
   },
   actions: {

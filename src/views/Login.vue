@@ -13,13 +13,13 @@
           class="helper-text invalid"
           v-if="$v.email.$dirty && !$v.email.required"
         >
-          Поле Email не должно быть пустым
+          {{ 'NotBeEmpty' | localize }}
         </small>
         <small
           class="helper-text invalid"
           v-else-if="$v.email.$dirty && !$v.email.email"
         >
-          Введите корректный Email
+          {{ 'EnterValidEmail' | localize }}
         </small>
       </div>
       <div class="input-field">
@@ -29,18 +29,18 @@
           v-model.trim="password"
           :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}"
         >
-        <label for="password">Пароль</label>
+        <label for="password">{{ 'Password' | localize }}</label>
         <small
           class="helper-text invalid"
           v-if="$v.password.$dirty && !$v.password.required"
         >
-          Введите пароль
+          {{ 'EnterPassword' | localize }}
         </small>
         <small
           class="helper-text invalid"
           v-else-if="$v.password.$dirty && !$v.password.minLength"
         >
-          Пароль должен быть {{$v.password.$params.minLength.min}} символов. Сейчас он {{password.length}}
+          {{ 'PasswordMustBe' | localize }} {{$v.password.$params.minLength.min}} {{ 'CharactersNowHe' | localize }} {{password.length}}
         </small>
       </div>
     </div>
@@ -50,14 +50,14 @@
           class="btn waves-effect waves-light auth-submit"
           type="submit"
         >
-          Войти
-          <i class="material-icons right">send</i>
+          {{ 'ComeIn' | localize }}
+        <i class="material-icons right">send</i>
         </button>
       </div>
 
       <p class="center">
-        Нет аккаунта?
-        <router-link to="/register">Зарегистрироваться</router-link>
+        {{ 'DontAccount' | localize }}?
+        <router-link to="/register">{{ 'RegisterNow' | localize }}</router-link>
       </p>
     </div>
   </form>
@@ -66,8 +66,14 @@
 <script>
 import { email, required, minLength } from 'vuelidate/lib/validators'
 import messages from '@/common/messages'
+import localizeFilter from '@/filters/localize.filter'
 
 export default {
+  metaInfo () {
+    return {
+      title: this.$title('LoginTitle')
+    }
+  },
   name: 'Login',
   data () {
     return {
@@ -87,7 +93,7 @@ export default {
   },
   mounted () {
     if (messages[this.$route.query.message]) {
-      this.$message(messages[this.$route.query.message])
+      this.$message(localizeFilter(messages[this.$route.query.message]))
     }
   },
   methods: {
